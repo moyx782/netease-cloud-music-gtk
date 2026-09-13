@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5f2">
+  <meta name="description" content="网易云音乐 GTK 浏览器版：发现歌单、搜索歌曲，在浏览器中聆听。">
+  <title>云音乐 · Web Player</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" type="module"></script>
+</head>
+<body>
+  <a class="skip" href="#content">跳到主要内容</a>
+  <aside class="sidebar">
+    <a class="brand" href="#discover" aria-label="云音乐首页"><span class="brand-icon" aria-hidden="true">♫</span><span>云音乐<small>MUSIC, EVERYWHERE.</small></span></a>
+    <div class="nav-label">在线音乐</div>
+    <nav aria-label="主导航">
+      <button class="nav active" data-view="discover" aria-current="page" aria-label="发现音乐"><span aria-hidden="true">◈</span><span>发现音乐</span></button>
+      <button class="nav" data-view="search" aria-label="搜索歌曲"><span aria-hidden="true">⌕</span><span>搜索歌曲</span></button>
+      <button class="nav" data-view="favorites" aria-label="我的收藏"><span aria-hidden="true">♡</span><span>我的收藏</span><small id="favorites-count">0</small></button>
+      <button class="nav" data-view="queue" aria-label="播放队列"><span aria-hidden="true">≡</span><span>播放队列</span><small id="queue-count">0</small></button>
+    </nav>
+    <div class="sidebar-note"><span aria-hidden="true">♫</span><p>让喜欢的声音，<br>陪你度过每一天。</p></div>
+    <div class="sidebar-foot"><span class="status-dot"></span>浏览器播放器<small>NeteaseCloudMusic GTK</small></div>
+  </aside>
+  <main id="content" tabindex="-1">
+    <header class="topbar"><span class="eyebrow greeting">好音乐，随时相伴</span><form id="search-form" role="search"><label class="sr-only" for="search-input">搜索歌曲、歌手</label><span aria-hidden="true">⌕</span><input id="search-input" type="search" maxlength="100" placeholder="搜索歌曲、歌手…" required autocomplete="off"><kbd aria-hidden="true">/</kbd><button type="submit">搜索</button></form><button id="login" class="outline">登录</button><button id="theme" class="icon-button" aria-label="切换深色主题" title="切换主题">◐</button></header>
+    <section class="page-heading"><div><p id="kicker" class="eyebrow">YOUR DAILY SOUNDTRACK</p><h1 id="title">发现音乐</h1><p id="subtitle">从一张歌单，开启今天的音乐旅程。</p></div><button id="refresh" class="outline">↻ 刷新推荐</button></section>
+    <div id="notice" role="status" aria-live="polite" hidden></div>
+    <section id="view" aria-label="音乐内容" aria-busy="false"></section>
+    <p class="page-foot">在这里，听见生活的另一面。<span>NETEASE CLOUD MUSIC / WEB</span></p>
+    <noscript><p class="empty">请启用 JavaScript 以浏览歌单和播放音乐。</p></noscript>
+  </main>
+  <dialog id="login-dialog" aria-labelledby="login-title"><form method="dialog" class="login-card"><button class="dialog-close" value="cancel" aria-label="关闭">×</button><h2 id="login-title">登录网易云音乐</h2><p id="login-status">使用桌面版同样的账号登录，登录状态会保存到本机。</p><div id="qr-login"><button id="qr-start" class="primary" type="button">生成二维码</button><img id="qr-image" alt="登录二维码" hidden><button id="qr-refresh" class="outline" type="button" hidden>刷新二维码</button></div><div class="login-divider">或使用账号密码</div><label>手机号 / 邮箱<input id="login-user" autocomplete="username"></label><label>密码<input id="login-password" type="password" autocomplete="current-password"></label><button id="password-login" class="primary" type="button">登录</button></form></dialog>
+  <footer class="player" aria-label="音乐播放器">
+    <div class="now-playing"><div class="cover-small" id="current-cover" role="button" tabindex="0" aria-label="打开全屏播放器" aria-hidden="false">♫</div><div class="track-meta"><strong id="current-title">音乐，即将响起</strong><span id="current-artist">选择一首，开始聆听</span></div><button id="lyrics-toggle" class="outline" type="button" disabled>歌词</button><button id="player-fullscreen" class="outline" type="button" disabled>全屏</button><button id="favorite-current" class="icon-button" aria-label="收藏当前歌曲" aria-pressed="false" disabled>♡</button></div>
+    <div class="transport"><div class="transport-buttons"><button id="mode" class="icon-button" aria-label="播放模式：列表循环" title="播放模式：列表循环">↻</button><button id="previous" aria-label="上一首" disabled>❮</button><button id="play" class="play-main" aria-label="播放" disabled>▶</button><button id="next" aria-label="下一首" disabled>❯</button></div><div class="timeline"><time id="elapsed">0:00</time><input id="seek" type="range" min="0" max="100" step="0.1" value="0" aria-label="播放进度" disabled><time id="duration">0:00</time></div></div>
+    <div class="volume"><label for="volume">音量</label><input id="volume" type="range" min="0" max="1" step="0.01" value="0.7"><button id="show-queue" class="outline" aria-label="查看播放队列">≡</button></div>
+    <audio id="audio" preload="none"></audio>
+  </footer>
+  <aside id="lyrics-panel" class="lyrics-panel" hidden><div class="lyrics-head"><h2>歌词</h2><div class="lyrics-actions"><button id="lyrics-fullscreen" class="outline" type="button">全屏</button><button id="lyrics-close" class="icon-button" aria-label="关闭歌词">×</button></div></div><div class="lyrics-layout"><section class="lyrics-side-card" aria-label="当前播放"><div id="lyrics-cover" class="lyrics-cover" aria-hidden="true">♫</div><strong id="lyrics-track-title">音乐，即将响起</strong><span id="lyrics-track-artist">选择一首，开始聆听</span><div class="lyrics-side-progress"><time id="lyrics-elapsed">0:00</time><input id="lyrics-seek" type="range" min="0" max="100" step="0.1" value="0" aria-label="歌词播放进度"><time id="lyrics-duration">0:00</time></div><div class="lyrics-side-controls"><button id="lyrics-prev" type="button" aria-label="上一首">◀</button><button id="lyrics-play" class="lyrics-play" type="button" aria-label="播放或暂停">▶</button><button id="lyrics-next" type="button" aria-label="下一首">▶</button></div></section><section class="lyrics-main"><p id="lyrics-meta" class="muted">选择歌曲后查看歌词</p><div id="lyrics-content" class="lyrics-content"></div></section></div></aside>
+</body>
+</html>

@@ -28,6 +28,7 @@ rust_sources = files(
   'model.rs',
   'ncmapi.rs',
   'path.rs',
+  'server.rs',
   'utils.rs',
   'audio/mod.rs',
   'audio/mpris.rs',
@@ -51,7 +52,14 @@ rust_sources = files(
   'gui/user_menus.rs',
 )
 
-sources = [cargo_sources, rust_sources]
+server_assets = files(
+  '../server/public/index.html',
+  '../server/public/app.js',
+  '../server/public/player-state.js',
+  '../server/public/style.css',
+)
+
+sources = [cargo_sources, rust_sources, server_assets]
 
 cargo_script = find_program(join_paths(meson.project_source_root(), 'build-aux/cargo.sh'))
 cargo_release = custom_target(

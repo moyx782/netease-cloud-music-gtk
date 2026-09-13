@@ -5,6 +5,7 @@ mod gui;
 mod model;
 mod ncmapi;
 mod path;
+mod server;
 mod utils;
 mod window;
 
@@ -29,6 +30,16 @@ pub static MAINCONTEXT: Lazy<glib::MainContext> = Lazy::new(glib::MainContext::d
 fn main() {
     // Initialize log
     env_logger::Builder::from_env(Env::default().default_filter_or("off")).init();
+
+    // The browser server shares the same NcmClient implementation as the GTK
+    // application and does not need to initialize a graphical application.
+    if std::env::args().any(|arg| arg == "--server") {
+        if let Err(error) = server::run() {
+            eprintln!("server error: {error:#}");
+            std::process::exit(1);
+        }
+        return;
+    }
 
     // Initialize gstreamer
     gstreamer::init().expect("Error initializing gstreamer");

@@ -109,6 +109,23 @@ ninja
 sudo ninja install
 ```
 
+## Server 版本
+
+仓库内的 `server/` 提供浏览器版本，后端直接复用仓库现有 Rust `NcmClient`，不引入 `ncm-cli` 或另一套 API 客户端。需要编译 Rust 程序：
+
+```bash
+meson setup _build
+meson compile -C _build
+./_build/src/netease-cloud-music-gtk4 --server
+# 浏览器打开 http://127.0.0.1:3000
+```
+
+可用环境变量：`PORT` 修改端口，`HOST` 修改监听地址。Server 会复用桌面版保存的登录 Cookie。
+
+Server 版本包含发现歌单、关键词搜索、歌单详情、播放队列、收藏、播放模式、音量和深色主题；队列及收藏仅保存于当前浏览器。
+登录弹窗支持二维码和账号密码登录；歌词和账号收藏歌单通过 Rust 客户端获取。
+歌词面板按 LRC 时间戳逐行高亮并自动滚动，点击歌词可跳转播放位置；无时间戳歌词也会正常显示。
+
 ## FAQ
 1. 为什么后台运行时没有托盘图标?
 > GNOME 桌面环境下可以安装[插件](https://extensions.gnome.org/extension/9164/status-tray/)以显示托盘图标。<br>
